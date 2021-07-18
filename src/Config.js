@@ -40,6 +40,7 @@ class JanusRoomConfig {
       isPrivate,
       secret,
       pin,
+      token,
       requirePvtid,
       audioCodec,
       vp9Profile,
@@ -69,6 +70,7 @@ class JanusRoomConfig {
     this.isPrivate = isPrivate
     this.secret = secret
     this.pin = pin
+    this.token = token
     this.requirePvtid = requirePvtid
     this.audioCodec = audioCodec
     this.vp9Profile = vp9Profile
@@ -101,6 +103,10 @@ class JanusRoomConfig {
 
     if (this.pin) {
       body.pin = this.pin
+    }
+
+    if (this.token) {
+      body.token = this.token
     }
 
     if (this.requirePvtid) { // default: false

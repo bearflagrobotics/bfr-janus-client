@@ -25,7 +25,7 @@ class JanusAdmin extends Janus {
   }
 
   addToken (token) {
-    return this.transaction('add_token', { token })
+    return this.transaction('add_token', { token }).then(() => token)
   }
 
   getTokens () {

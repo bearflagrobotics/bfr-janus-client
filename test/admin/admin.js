@@ -1,5 +1,5 @@
 const adapter = require('webrtc-adapter')
-const { JanusAdminConfig } = require('../../src/Config')
+const { JanusConfig, JanusAdminConfig } = require('../../src/Config')
 const common = require('../common')
 const config = new JanusAdminConfig(common.admin)
 
@@ -16,14 +16,24 @@ const main = async () => {
     console.error(`Error connecting to Admin API: ${e}`)
   }
 
-  const tokens = await getValidTokens()
+  let token = await getValidToken()
 
-  if (!tokens.length) {
-    await admin.addToken(`bearflag:${Date.now()}`)
+  if (!token) {
+    token = await admin.addToken(`bearflag:${Date.now()}`)
   }
+
+  const janus = new JanusConfig({ token, ...common.janus }, console)
+
+  try {
+    await janus.connect()
+  } catch (e) {
+    console.error(`Error connecting to Janus WS ${e}`)
+  }
+
+  console.log('Janus connected')
 }
 
-async function getValidTokens() {
+async function getValidToken() {
   let tokens
 
   try {
@@ -42,7 +52,7 @@ async function getValidTokens() {
     else await admin.removeToken(token)
   }
 
-  return validTokens
+  return validTokens[0]
 }
 
 main()

@@ -47,6 +47,7 @@ class Janus {
 
         const transaction = uuid()
         const request = { janus: 'create', transaction }
+        if (this.config.token) request.token = this.config.token
 
         this.transactions[transaction] = {
           resolve: (json) => {
@@ -142,6 +143,7 @@ class Janus {
         session_id: this.sessionId,
         transaction: uuid()
       })
+      if (this.config.token) request.token = this.config.token
 
       this.logger.debug('Janus sending', request)
       this.websocketSend(JSON.stringify(request), {}, (err) => {
