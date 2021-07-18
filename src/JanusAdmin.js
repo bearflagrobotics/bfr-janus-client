@@ -24,6 +24,14 @@ class JanusAdmin extends Janus {
     return this.transaction('list_sessions').then(r => r.sessions)
   }
 
+  addToken (token) {
+    return this.transaction('add_token', { token })
+  }
+
+  getTokens () {
+    return this.transaction('list_tokens').then(r => r.data.tokens)
+  }
+
   listHandles (sessionId) {
     return this.transaction('list_handles', {
       session_id: sessionId

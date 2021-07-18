@@ -1,6 +1,6 @@
 {
-  "name": "@techteamer/janus-api",
-  "version": "6.2.4",
+  "name": "bfr-janus-client",
+  "version": "0.1.0",
   "description": "Janus WebRTC-Gateway API",
   "main": "index.js",
   "scripts": {
@@ -40,5 +40,8 @@
     "eslint-plugin-standard": "^4.0.0",
     "http-server": "^0.12.1",
     "webrtc-adapter": "^7.5.0"
+  },
+  "directories": {
+    "test": "test"
   }
 }
