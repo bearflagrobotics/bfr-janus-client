@@ -16,14 +16,33 @@ const main = async () => {
     console.error(`Error connecting to Admin API: ${e}`)
   }
 
-  let tokens = await admin.getTokens()
-  console.log(JSON.stringify(tokens))
+  const tokens = await getValidTokens()
 
-  await admin.addToken('bearflag')
+  if (!tokens.length) {
+    await admin.addToken(`bearflag:${Date.now()}`)
+  }
+}
 
-  tokens = await admin.getTokens()
-  console.log(JSON.stringify(tokens))
+async function getValidTokens() {
+  let tokens
 
+  try {
+    tokens = await admin.getTokens()
+  } catch (e) {
+    console.error(`Error getting tokens from Admin API ${e}`)
+  }
+
+  const validTokens = []
+
+  for (const { token } of tokens) {
+    const [_, timestamp] = token.split(':')
+    const currentTime = (new Date()).getTime()
+
+    if (currentTime - timestamp < 5000) validTokens.push(token)
+    else await admin.removeToken(token)
+  }
+
+  return validTokens
 }
 
 main()
