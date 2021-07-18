@@ -343,7 +343,8 @@ class Janus {
 
     if (json.janus === 'error') { // Oops, something wrong happened
       if (json.error && json.error.code && !ignoredErrorCodes.includes(json.error.code)) {
-        this.logger.error('Janus error response' + json)
+        if (json.error.code === 403) this.logger.error(`Missing or invalid authentication token`)
+        else this.logger.error(json)
       }
 
       const transaction = this.getTransaction(json, true)

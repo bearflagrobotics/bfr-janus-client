@@ -3,9 +3,8 @@ const { JanusConfig, JanusAdminConfig } = require('../../src/Config')
 const common = require('../common')
 const config = new JanusAdminConfig(common.admin)
 
+const Janus = require('../../src/Janus')
 const JanusAdmin = require('../../src/JanusAdmin')
-
-const listTokensButton = document.getElementById('listTokensButton')
 
 const admin = new JanusAdmin(config, console)
 
@@ -13,7 +12,8 @@ const main = async () => {
   try {
     await admin.connect()
   } catch (e) {
-    console.error(`Error connecting to Admin API: ${e}`)
+    console.error(`Unable to connect to Admin API`)
+    return
   }
 
   let token = await getValidToken()
@@ -22,15 +22,16 @@ const main = async () => {
     token = await admin.addToken(`bearflag:${Date.now()}`)
   }
 
-  const janus = new JanusConfig({ token, ...common.janus }, console)
+  const janusConfig = new JanusConfig({ token, ...common.janus })
+  const janus = new Janus(janusConfig, console)
 
   try {
     await janus.connect()
   } catch (e) {
-    console.error(`Error connecting to Janus WS ${e}`)
+    console.error(`Unable to connect to Janus`)
+    return
   }
 
-  console.log('Janus connected')
 }
 
 async function getValidToken() {
