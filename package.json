@@ -1,6 +1,6 @@
 {
   "name": "bfr-janus-client",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Janus WebRTC-Gateway API",
   "main": "index.js",
   "scripts": {
