@@ -123,8 +123,10 @@ class Janus {
       const request = Object.assign({}, payload, {
         janus: type,
         session_id: (payload && parseInt(payload.session_id, 10)) || this.sessionId,
-        transaction: transactionId
+        transaction: transactionId,
       })
+
+      if (!request.token && this.config.token) request.token = this.config.token
 
       this.transactions[request.transaction] = { resolve, reject, replyType, request }
       this.websocketSend(JSON.stringify(request))
@@ -412,7 +414,7 @@ class Janus {
       setTimeout(() => { this.keepAlive() }, this.config.keepAliveIntervalMs)
     } else {
       // logger.debug('Sending Janus keepalive')
-      this.transaction('keepalive', { token: this.config.token }).then(() => {
+      this.transaction('keepalive').then(() => {
         setTimeout(() => { this.keepAlive() }, this.config.keepAliveIntervalMs)
       }).catch((err) => {
         this.logger.warn('Janus keepalive error', err)
