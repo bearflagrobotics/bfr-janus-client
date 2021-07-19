@@ -412,7 +412,7 @@ class Janus {
       setTimeout(() => { this.keepAlive() }, this.config.keepAliveIntervalMs)
     } else {
       // logger.debug('Sending Janus keepalive')
-      this.transaction('keepalive').then(() => {
+      this.transaction('keepalive', { token: this.config.token }).then(() => {
         setTimeout(() => { this.keepAlive() }, this.config.keepAliveIntervalMs)
       }).catch((err) => {
         this.logger.warn('Janus keepalive error', err)
